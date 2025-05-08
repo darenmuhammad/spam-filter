@@ -1,15 +1,126 @@
-# spam-filter
 
-.match()
-Strings have a .match() method, which accepts a regular expression as an argument and determines if the string matches that expression.
+# 🧩 JavaScript Regex & Array Methods Reference
 
-.test()
-.test() returns a boolean value indicating whether or not the string matches the pattern.
+Dokumentasi ini berisi penjelasan dasar tentang penggunaan **Regular Expressions (RegEx)** di JavaScript, serta metode terkait seperti `.match()`, `.test()`, dan `.some()`. Termasuk juga konsep penting seperti **alternate sequence**, **character class**, **capture group**, dan **non-capturing group**.
 
-The alternate sequence | can be used to match either the text on the left or the text on the right of the |. For example, the regular expression /yes|no/ will match either yes or no
+---
 
-Arrays have a .some() method. Like the .filter() method, .some() accepts a callback function which should take an element of the array as the argument. The .some() method will return true if the callback function returns true for at least one element in the array.
+## 🔍 Regular Expressions (RegEx)
 
-A character class is defined by square brackets, and matches any character within the brackets. For example, [aeiou] matches any character in the list aeiou. You can also define a range of characters to match using a hyphen. For example, [a-z] matches any character from a to z.
+Regular Expression adalah pola teks yang digunakan untuk mencocokkan string. Ditulis di antara `/pattern/` atau dengan `new RegExp()`.
 
-Now that you have your capture group, you can mark the entire pattern as an optional match. The ? quantifier matches zero or one occurrence of the preceding character or group. For example, the regular expression /colou?r/ matches both color and colour, because the u is optional.
+Contoh:
+```javascript
+const regex = /abc/;
+regex.test("abc"); // true
+```
+
+---
+
+## 📌 .match()
+
+Digunakan untuk mencocokkan string terhadap regex dan mengembalikan **array hasil match** atau `null`.
+
+```javascript
+const str = "hello 123";
+const result = str.match(/\d+/); // ["123"]
+```
+
+---
+
+## 📌 .test()
+
+Digunakan untuk menguji apakah sebuah string **mengandung pola**. Mengembalikan `true` atau `false`.
+
+```javascript
+const regex = /\d+/;
+regex.test("abc123"); // true
+```
+
+---
+
+## 🔁 Alternate Sequence (`|`)
+
+Operator `|` digunakan untuk mencocokkan **salah satu dari beberapa pola**.
+
+```javascript
+const regex = /cat|dog/;
+"i have a dog".match(regex); // ["dog"]
+```
+
+---
+
+## ✅ .some()
+
+Digunakan untuk menguji apakah **setidaknya satu elemen** dalam array memenuhi kondisi tertentu.
+
+```javascript
+const nums = [1, 2, 3, 4];
+const hasEven = nums.some(n => n % 2 === 0); // true
+```
+
+---
+
+## 🔣 Character Class
+
+Character class memungkinkan pencocokan karakter tertentu:
+
+| Class      | Artinya                        | Contoh               |
+|------------|--------------------------------|----------------------|
+| `\d`       | Angka 0–9                      | `/\d/` → `"3"`       |
+| `\w`       | Karakter alfanumerik & `_`     | `/\w/` → `"a"`       |
+| `\s`       | Spasi, tab, newline            | `/\s/` → `" "`       |
+| `.`        | Semua karakter kecuali newline | `/./`  → `"a"`       |
+| `[abc]`    | a, b, atau c                   | `/[abc]/`            |
+| `[^abc]`   | Selain a, b, atau c            | `/[^abc]/`           |
+
+---
+
+## 🎯 Capture Group
+
+Capture group menyimpan bagian dari string yang cocok dengan bagian tertentu dari regex.
+
+```javascript
+const regex = /Hello, (\w+)!/;
+const result = "Hello, Alice!".match(regex);
+// result[1] === "Alice"
+```
+
+- Dapat diakses lewat `result[n]` saat menggunakan `.match()`.
+
+---
+
+## 🚫 Non-Capturing Group
+
+Digunakan untuk mengelompokkan tanpa menyimpan hasil match-nya.
+
+```javascript
+const regex = /(?:foo|bar)/;
+"bar".match(regex); // ["bar"], tapi tidak bisa diakses dengan index
+```
+
+Gunakan `(?:...)` daripada `(...)` jika tidak perlu menyimpan hasil.
+
+---
+
+## 🧪 Perbandingan Cepat
+
+| Fitur         | Tujuan                             | Hasil                         |
+|---------------|------------------------------------|-------------------------------|
+| `.match()`    | Mengambil hasil match              | Array atau null               |
+| `.test()`     | Mengecek apakah match ada          | Boolean                       |
+| `|`           | Alternatif (OR)                    | Salah satu cocok              |
+| `.some()`     | Cek kondisi pada array             | Boolean                       |
+| `()`          | Capture group                      | Disimpan di hasil match       |
+| `(?:...)`     | Non-capturing group                | Tidak disimpan di hasil match |
+
+---
+
+## 📌 Kesimpulan
+
+- RegEx sangat powerful untuk pencocokan pola string.
+- `.match()` dan `.test()` adalah dua metode utama untuk regex di JavaScript.
+- Gunakan `|` untuk alternatif, dan character class untuk fleksibilitas pencocokan.
+- Capture group membantu mengambil bagian spesifik dari string.
+- `.some()` digunakan dalam array, bukan regex, tapi berguna dalam konteks pencarian.
+
